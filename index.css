@@ -1,0 +1,28 @@
+body{
+  text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  
+}
+
+h1{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.buttons{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+img{
+  max-width: 25%;
+  height:auto;
+  flex:1;
+  border-radius: 10px;
+}
+
+h3, h2{
+  font-weight: 600;
+}

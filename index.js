@@ -1,70 +1,87 @@
-let cPoint = 0;
-let pPoint = 0;
 
-game();
+// CLICKING THE ROCK PAPER OR SCISSORS BUTTON CHOOSES PLAYER MOVE, TRIGGERS COMPUTER MOVE
+// AND TRIGGERS PLAY-ROUND (THIS EVALUATES WINNER AND PRINTS SCORE)
 
-function game(){
-  for (let i = 0; i < 5; i++) {
-    const computerSelection = getCompMove();
-    const playerSelection = getPlayerMove(); 
-    const roundResult = playRound(computerSelection,playerSelection);
-    console.log (roundResult);
-  }
-  const winner=getWinner();
-  console.log(winner);
-  cPoint = 0;
-  pPoint = 0;
-}
+const rockBtn = document.querySelector("#rock"); //GET ROCK BUTTON
+rockBtn.addEventListener("click",()=>{           //ADD CLICK EVENT LISTENER
+  const playerSelection = "rock";                //CHOOSE ROCK AS PLAYER SELECTION
+  const computerSelection = getCompMove();       //TRIGGER FUNCTION TO GET COMPUTER MOVE 
+  playRound(computerSelection,playerSelection);  //PLAYROUND WITH THE TWO MOVES 
+});
+
+const paperBtn = document.querySelector("#paper");
+paperBtn.addEventListener("click",()=>{
+  const playerSelection = "paper";
+  const computerSelection = getCompMove(); 
+  playRound(computerSelection,playerSelection);
+});
+
+const scissorsBtn = document.querySelector("#scissors");
+scissorsBtn.addEventListener("click",()=>{
+  const playerSelection = "scissors";
+  const computerSelection = getCompMove(); 
+  playRound(computerSelection,playerSelection);
+});
 
 
+let cPoint=0;    //Computer point    
+let pPoint=0;    //Player point
+// PLAYROUND FUNCTION:
+// (THIS EVALUATES WINNER AND PRINTS SCORE)
 function playRound(computerSelection,playerSelection){
-  
-  let result = "";
+
+  const roundResult = document.getElementById("roundResult");
+  const score = document.getElementById("score");
+  // WHAT HAPPENS IF GAME IS A TIE
 
   if(playerSelection === computerSelection){
-    result = (`You tie! you both chose ${playerSelection}
-    Score: Player: ${pPoint}  Computer: ${cPoint}`);
+    roundResult.textContent = `You tie! you both chose ${playerSelection}`
+    score.textContent = `Score: Player: ${pPoint}  Computer: ${cPoint}`;
+    
+// WHAT HAPPENS IF YOU WIN
 
-  }else if (playerSelection === "rock" && computerSelection == "scissors" || 
-           playerSelection === "paper" && computerSelection == "rock" ||
-           playerSelection === "scissors" && computerSelection == "paper"){
+  }else if (playerSelection === "rock" && computerSelection === "scissors" || 
+           playerSelection === "paper" && computerSelection === "rock" ||
+           playerSelection === "scissors" && computerSelection === "paper"){
     pPoint = pPoint + 1;       
-    result = `You win! ${playerSelection} beats ${computerSelection}.
-    Score: Player: ${pPoint}  Computer: ${cPoint}`;
+    roundResult.textContent = `You win! ${playerSelection} beats ${computerSelection}.`
+    score.textContent = `Score: Player: ${pPoint}  Computer: ${cPoint}`;
 
-  }else if (playerSelection === "rock" && computerSelection == "paper" ||
-           playerSelection === "paper" && computerSelection == "scissors" ||
-           playerSelection === "scissors" && computerSelection == "rock"  ){
+    // WHAT HAPPENS IF YOU LOSE
+
+  }else if (playerSelection === "rock" && computerSelection === "paper" ||
+           playerSelection === "paper" && computerSelection === "scissors" ||
+           playerSelection === "scissors" && computerSelection === "rock"  ){
     cPoint = cPoint + 1;   
-    result = `You lose! ${computerSelection} beats ${playerSelection}.
-    Score: Player: ${pPoint}  Computer: ${cPoint}`;
+    roundResult.textContent = `You lose! ${computerSelection} beats ${playerSelection}.`
+    score.textContent = `Score: Player: ${pPoint}  Computer: ${cPoint}`;
   }
-  return result;
+  if (pPoint===5 || cPoint===5) {
+    announceWinner(cPoint,pPoint);
+  }
 }
 
 
+//FUNCTION THAT GETS THE COMPUTER MOVE
 function getCompMove(){
   let options = ["rock", "paper", "scissors"];
   return cChoice = options[Math.floor(Math.random() * options.length)];
 }
 
+//THE FUNCTION THAT TELLS ANNOUNCES OVERALL WINNER
+function announceWinner(cPoint,pPoint){
 
-function getPlayerMove(){
-  let pChoice = prompt ("Type rock, paper or scissors");
-  pChoice = pChoice.toLowerCase();
-  return pChoice;
-}
+  const winner = document.getElementById ("winner");
 
-
-function getWinner(){
-  let result = "";
-
-  if (pPoint === cPoint){
-    result = `You Tie! ${pPoint} - ${cPoint}}`;
-  } else if (pPoint > cPoint){
-    result = `Player wins! ${pPoint} - ${cPoint}`;
-  } else{
-    result = `Computer wins! ${cPoint} - ${pPoint}`;
+  if (cPoint=5) {
+    winner.textContent = `Computer Wins! - 
+    Reload to restart the game`;
+    cPoint = 0;
+    pPoint = 0;
+  } else if(pPoint=5){
+    winner.textContent = `Player Wins! - 
+    Reload to restart the game`
+    cPoint = 0;
+    pPoint = 0;
   }
-  return result;
 }
